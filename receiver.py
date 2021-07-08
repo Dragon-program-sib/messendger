@@ -22,4 +22,4 @@ while True:
         print_messages(messages)
         after = messages[-1]['time']
 
-    time.sleep(1)
+    time.sleep(2)

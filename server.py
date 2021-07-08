@@ -6,14 +6,14 @@ from flask import Flask, request, abort
 app = Flask(__name__)
 db = [
     {
-        'text': 'Hello!',
+        'text': 'hello',
         'name': 'Jack',
-        'time': time.time()
+        'time': 0.1
     },
     {
-        'text': 'Hello, Jack!',
+        'text': 'hello, Jack',
         'name': 'John',
-        'time': time.time()
+        'time': 0.2
     }
 ]
 
@@ -24,9 +24,19 @@ def hello():
 @app.route("/status")
 def status():
     now = datetime.now()
+    users = []
+    for user in db:
+        users.append(user['name'])
+    #quantity_users = []
+    #for message in db:
+        #if message['name'] not in quantity_users:
+            #quantity_users.append(message['name'])
     return {
         'status': True,
         'name': 'Messenger in Python',
+        'quantity_messages': len(db),
+        #'quantity_users': len(quantity_users),
+        'quantity_users': len(set(users)),
         'time0': time.time(),
         'time1': time.asctime(),
         'time2': now,        #dangerous
@@ -45,8 +55,8 @@ def send_message():
     if 'text' not in data or 'name' not in data:
         return abort(400)
 
-    text = data['text']
-    name = data['name']
+    text = data['text'].strip()
+    name = data['name'].strip()
 
     # Check text & name are valid strings.
     if not isinstance(text, str) or not isinstance(name, str):
